@@ -12,6 +12,10 @@ const ApiKeyForm = () => {
     queryKey: ['api-key'],
     successMessage: 'API key saved successfully',
     showSuccessAlert: true,
+    callback: () => {
+      // reload propel user
+      refreshAuthInfo();
+    },
   });
 
   // Clear form after successful mutation
@@ -28,9 +32,6 @@ const ApiKeyForm = () => {
     if (!apiKey.trim()) return;
 
     mutation.mutate({ apiKey: apiKey.trim() });
-
-    // reload propel user
-    refreshAuthInfo();
   };
 
   return (

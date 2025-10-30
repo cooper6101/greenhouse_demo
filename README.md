@@ -101,3 +101,5 @@ The backend contains only the necessary routes outlined in the design doc (jobs 
 
 
 The client is a React/Vite app Key features include a reusable DataTable component with column visibility toggles, pagination, and configurable row counts for displaying both jobs and candidates. Server state is managed with React Query for caching and automatic refetching, and an ErrorBoundary wraps the application to catch and display React errors gracefully. While it looks relatively robust for this coding challenge, I maintain several boilerplate apps to pull from, and frequently rely on cursor to help build decent looking components quickly. I always ensure I review the code cursor writes to ensure best practices are maintained, and the AI didn't hallucinate anything weird. 
+
+As a final note - this application is deployed in Render(backend) and Netlify(frontend). The design docs called for Heruko, but they got rid of their free tier some time ago. I have deployed apps to heroku in the past however, if it becomes relevant to demonstrate proficiency. 
