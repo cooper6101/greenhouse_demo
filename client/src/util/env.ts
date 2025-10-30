@@ -2,7 +2,6 @@ import { z } from 'zod';
 
 const clientEnv = z.object({
   VITE_BASE_URL: z.string().url(),
-  VITE_DEVELOPMENT_MODE: z.string(),
   VITE_AUTH_URL: z.string().url(),
 });
 
