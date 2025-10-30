@@ -9,8 +9,12 @@ import {
 } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { RedirectToLogin, useAuthInfo } from '@propelauth/react';
+import { useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
+import * as ApiKey from '@/api/ApiKey';
+import ConfirmDialog from '@/components/ConfirmDialog';
 import Overlay from '@/components/Overlay';
+import { useApiMutation } from '@/hooks/query';
 import { classNames } from '@/util/common';
 import Dashboard from '../scenes/Dashboard';
 import JobView from '../scenes/Jobs/JobView';
@@ -19,8 +23,22 @@ const navigation = [{ name: 'Home', href: '/dashboard', current: true }];
 const userNavigation = [{ name: 'Sign out', href: '/logout' }];
 
 const DashboardLayout = () => {
-  const { user, isLoggedIn, loading } = useAuthInfo();
+  const { user, isLoggedIn, loading, refreshAuthInfo } = useAuthInfo();
   const location = useLocation();
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+
+  const hasApiKey = (user as any)?.metadata?.greenhouseApiKey;
+
+  const deleteMutation = useApiMutation({
+    mutationFn: ApiKey.destroy,
+    queryKey: ['api-key'],
+    successMessage: 'API key cleared successfully',
+    showSuccessAlert: true,
+    callback: () => {
+      refreshAuthInfo();
+      setIsConfirmDialogOpen(false);
+    },
+  });
 
   // Determine if Home nav item should be current
   const currentNavigation = navigation.map((item) => ({
@@ -102,6 +120,23 @@ const DashboardLayout = () => {
                   transition
                   className='absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg outline outline-black/5 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-75 data-leave:ease-in dark:bg-gray-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10'
                 >
+                  {hasApiKey && (
+                    <MenuItem>
+                      {({ focus }) => (
+                        <button
+                          type='button'
+                          onClick={() => setIsConfirmDialogOpen(true)}
+                          className={`block w-full px-4 py-2 text-left text-sm text-gray-700 ${
+                            focus
+                              ? 'bg-gray-100 dark:bg-white/5'
+                              : 'bg-white dark:bg-gray-800'
+                          } dark:text-gray-300`}
+                        >
+                          Clear API Key
+                        </button>
+                      )}
+                    </MenuItem>
+                  )}
                   {userNavigation.map((item) => (
                     <MenuItem key={item.name}>
                       <a
@@ -182,6 +217,16 @@ const DashboardLayout = () => {
               </button>
             </div>
             <div className='mt-3 space-y-1'>
+              {hasApiKey && (
+                <DisclosureButton
+                  as='button'
+                  type='button'
+                  onClick={() => setIsConfirmDialogOpen(true)}
+                  className='block w-full px-4 py-2 text-left text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-200'
+                >
+                  Clear API Key
+                </DisclosureButton>
+              )}
               {userNavigation.map((item) => (
                 <DisclosureButton
                   key={item.name}
@@ -205,6 +250,18 @@ const DashboardLayout = () => {
           </Routes>
         </main>
       </div>
+
+      <ConfirmDialog
+        isOpen={isConfirmDialogOpen}
+        onClose={() => setIsConfirmDialogOpen(false)}
+        onConfirm={() => deleteMutation.mutate({})}
+        title='Clear API Key'
+        message='Are you sure you want to clear your Greenhouse API key? You will need to enter it again to view jobs and candidates.'
+        confirmText='Clear API Key'
+        cancelText='Cancel'
+        isPending={deleteMutation.isPending}
+        danger
+      />
     </div>
   );
 };

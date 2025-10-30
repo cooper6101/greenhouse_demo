@@ -12,3 +12,15 @@ export const create = async (req, res) => {
     return handleError(res)(error);
   }
 };
+
+export const destroy = async (req, res) => {
+  const userId = req.headers['x-greenhouse-userid'] as string;
+
+  try {
+    await lib.destroy(userId);
+
+    return respondWithResult(res, 204)('API key destroyed');
+  } catch (error) {
+    return handleError(res)(error);
+  }
+};

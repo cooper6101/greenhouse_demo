@@ -10,3 +10,11 @@ export const create = async ({
   };
   headers: AxiosHeaders;
 }): Promise<void> => api.post('api-key', { data: details, headers });
+
+export const destroy = async ({
+  details: _details,
+  headers,
+}: {
+  details?: Record<string, never>;
+  headers: AxiosHeaders;
+}): Promise<void> => api.delete('api-key', { headers });

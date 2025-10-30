@@ -7,6 +7,11 @@ const routes = (router: FastifyInstance, prefix: string) => {
     preHandler: authenticate(),
     handler: controller.create,
   });
+
+  router.delete(`${prefix}`, {
+    preHandler: authenticate(),
+    handler: controller.destroy,
+  });
 };
 
 export default routes;

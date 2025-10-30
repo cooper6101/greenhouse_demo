@@ -71,4 +71,17 @@ describe('apiKey route Test', () => {
     // The encrypted key should be different from the plain key
     expect(callArgs[1].metadata.greenhouseApiKey).not.toBe('TEST_API_KEY');
   });
+
+  test('should DELETE destroy apiKey', async () => {
+    const res = await fastify.inject().delete(`/api-key`).headers({
+      authorization: 'Bearer test-token',
+    });
+
+    expect(res.statusCode).toEqual(204);
+
+    expect(stubs.updateMetadata.calledOnce).toBe(true);
+    const callArgs = stubs.updateMetadata.firstCall.args;
+    expect(callArgs[0]).toBe('123'); // userId
+    expect(callArgs[1].metadata.greenhouseApiKey).toBeNull();
+  });
 });
