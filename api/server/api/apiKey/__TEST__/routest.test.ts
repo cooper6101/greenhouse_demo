@@ -43,7 +43,7 @@ describe('apiKey route Test', () => {
   });
 
   test('should fail without valid API key', async () => {
-    const res = await fastify.inject().post(`/apiKey`);
+    const res = await fastify.inject().post(`/api-key`);
 
     expect(res.statusCode).toEqual(401);
   });
@@ -51,7 +51,7 @@ describe('apiKey route Test', () => {
   test('should POST create apiKey', async () => {
     const res = await fastify
       .inject()
-      .post(`/apiKey`)
+      .post(`/api-key`)
       .headers({
         authorization: 'Bearer test-token',
       })

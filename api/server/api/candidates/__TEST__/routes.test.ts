@@ -26,15 +26,19 @@ describe('candidates route Test', () => {
       get: sinon.stub().resolves({ data: [oneCandidate] }),
     };
 
-    stubs.gh = sinon.stub(ghModule, 'default').returns(mockAxios as any);
+    // Stub the gh function to return mock axios, but accept the key parameter
+    stubs.gh = sinon
+      .stub(ghModule, 'default')
+      .callsFake(() => mockAxios as any);
     stubs.getCandidates = mockAxios.get;
 
     stubs.auth = sinon.stub(propel, 'validateAccessTokenAndGetUser').resolves({
       userId: '123',
       email: '',
-      properties: {},
-      metadata: {
-        greenhouseApiKey: encryptedKey,
+      properties: {
+        metadata: {
+          greenhouseApiKey: encryptedKey,
+        },
       },
     } as any);
   });

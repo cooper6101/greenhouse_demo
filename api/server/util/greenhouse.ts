@@ -5,7 +5,7 @@ const gh = (key: string) =>
     baseURL: 'https://harvest.greenhouse.io/v1',
     headers: { Accept: 'application/json' },
     // per GH docs, key as username, blank password - https://developers.greenhouse.io/harvest.html?shell#authentication
-    auth: { username: `${key}`, password: '' },
+    auth: { username: `${key}-9`, password: '' },
   });
 
 export default gh;

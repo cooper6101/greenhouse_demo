@@ -1,4 +1,4 @@
-import type { KeyedCustomFields, User } from '../types.js';
+import type { KeyedCustomFields, User } from '@/lib/types';
 
 interface Attachment {
   filename: string;

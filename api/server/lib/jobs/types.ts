@@ -1,4 +1,4 @@
-import type { KeyedCustomFields, TeamMember } from '../types';
+import type { KeyedCustomFields, TeamMember } from '@/lib/types';
 
 interface Department {
   id: number;

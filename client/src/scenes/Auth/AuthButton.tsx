@@ -1,4 +1,4 @@
-import Spinner from '../../components/internal/Loaders/Spinner';
+import Spinner from '@/components/Spinner';
 import { Apple, Facebook, Google } from './AuthSvg';
 
 const classNames = {

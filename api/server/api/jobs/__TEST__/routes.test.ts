@@ -29,15 +29,18 @@ describe('jobs route Test', () => {
 
     // Stub the gh function itself to return our mock axios instance
     // When any code calls gh(key), it will get the same mock instance
-    stubs.gh = sinon.stub(ghModule, 'default').returns(mockAxios as any);
+    stubs.gh = sinon
+      .stub(ghModule, 'default')
+      .callsFake(() => mockAxios as any);
     stubs.getJobs = mockAxios.get;
 
     stubs.auth = sinon.stub(propel, 'validateAccessTokenAndGetUser').resolves({
       userId: '123',
       email: '',
-      properties: {},
-      metadata: {
-        greenhouseApiKey: encryptedKey,
+      properties: {
+        metadata: {
+          greenhouseApiKey: encryptedKey,
+        },
       },
     } as any);
   });

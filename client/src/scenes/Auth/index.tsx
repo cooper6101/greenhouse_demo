@@ -1,7 +1,7 @@
 import { useRedirectFunctions } from '@propelauth/react';
 import { useEffect } from 'react';
 
-import Overlay from '../../components/internal/Loaders/Overlay';
+import Overlay from '@/components/Overlay';
 
 const AuthLoader = ({ authRoute }: { authRoute: 'login' | 'signup' }) => {
   const { redirectToLoginPage, redirectToSignupPage } = useRedirectFunctions();

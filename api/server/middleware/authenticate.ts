@@ -16,7 +16,9 @@ const authenticate =
 
     // set headers
     request.headers['x-greenhouse-userid'] = user.userId;
-    request.headers['x-greenhouse-key'] = user.metadata?.greenhouseApiKey;
+    request.headers['x-greenhouse-key'] = (
+      user.properties?.metadata as any
+    )?.greenhouseApiKey;
   };
 
 export default authenticate;

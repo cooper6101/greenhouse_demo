@@ -7,6 +7,7 @@ export const one = async (req, res) => {
 
   try {
     const decryptedKey = decrypt(key);
+
     const { id } = req.params;
     const job = await lib.one({ id, key: decryptedKey });
 
@@ -19,8 +20,13 @@ export const one = async (req, res) => {
 export const search = async (req, res) => {
   const key = req.headers['x-greenhouse-key'] as string;
 
+  console.log(key);
+
   try {
     const decryptedKey = decrypt(key);
+
+    console.log(decryptedKey);
+
     const { perPage, page } = req.query;
 
     const jobs = await lib.search({

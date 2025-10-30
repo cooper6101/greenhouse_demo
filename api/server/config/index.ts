@@ -10,8 +10,6 @@ const envSchema = z.object({
   ip: z.string().optional().default('0.0.0.0'),
 
   NODE_ENV: z.string().min(1),
-  RO_STRING: z.string().min(1),
-  RW_STRING: z.string().min(1),
   UI_BASE_URL: z.string().min(1),
   AUTH_URL: z.string().min(1),
   AUTH_API_KEY: z.string().min(1),

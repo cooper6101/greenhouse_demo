@@ -3,7 +3,11 @@ import { SnackbarProvider } from 'notistack';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 import './input.css';
-import Dashboard from './scenes/Dashboard';
+import { AuthProvider } from '@propelauth/react';
+import AuthLayout from './layouts/Auth';
+import DashboardLayout from './layouts/Dashboard';
+import Logout from './scenes/Auth/Logout';
+import ErrorBoundary from './scenes/ErrorBoundary';
 import { env } from './util/env';
 
 // Import Auth URL
@@ -23,13 +27,20 @@ const App = () => {
       autoHideDuration={5000}
       preventDuplicate={true}
     >
-      <QueryClientProvider client={queryClient}>
-        <Router>
-          <Routes>
-            <Route path='/*' element={<Dashboard />} />
-          </Routes>
-        </Router>
-      </QueryClientProvider>
+      <ErrorBoundary>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider authUrl={AUTH_URL}>
+            <Router>
+              <Routes>
+                <Route path='/*' element={<DashboardLayout />} />
+                <Route path='/logout' element={<Logout />} />
+                <Route path='/auth/*' element={<AuthLayout />} />
+                <Route path='/dashboard/*' element={<DashboardLayout />} />
+              </Routes>
+            </Router>
+          </AuthProvider>
+        </QueryClientProvider>
+      </ErrorBoundary>
     </SnackbarProvider>
   );
 };

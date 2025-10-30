@@ -11,7 +11,7 @@ const routes = (app: FastifyInstance) => {
     return { status: 'ok', statusCode: 200 };
   });
 
-  apiKey(app, '/apiKey');
+  apiKey(app, '/api-key');
   candidates(app, '/candidates');
   jobs(app, '/jobs');
 };

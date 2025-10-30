@@ -15,7 +15,7 @@ export default {
     }
   ) => {
     return axios({
-      url: `${baseURL}/api/${url}`,
+      url: `${baseURL}/${url}`,
       params: query,
       method: 'GET',
       headers,
@@ -35,7 +35,7 @@ export default {
     }
   ) => {
     return axios({
-      url: `${baseURL}/api/${url}`,
+      url: `${baseURL}/${url}`,
       method: 'POST',
       data,
       params: query,
@@ -56,7 +56,7 @@ export default {
     }
   ) => {
     return axios({
-      url: `${baseURL}/api/${url}`,
+      url: `${baseURL}/${url}`,
       method: 'PUT',
       data,
       params: query,
@@ -75,7 +75,7 @@ export default {
     }
   ) => {
     return axios({
-      url: `${baseURL}/api/${url}`,
+      url: `${baseURL}/${url}`,
       method: 'DELETE',
       params: query,
       headers,
