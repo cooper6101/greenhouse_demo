@@ -23,7 +23,7 @@ const navigation = [{ name: 'Home', href: '/dashboard', current: true }];
 const userNavigation = [{ name: 'Sign out', href: '/logout' }];
 
 const DashboardLayout = () => {
-  const { user, isLoggedIn, loading, refreshAuthInfo } = useAuthInfo();
+  const { user, isLoggedIn, loading } = useAuthInfo();
   const location = useLocation();
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
 
@@ -35,9 +35,10 @@ const DashboardLayout = () => {
     successMessage: 'API key cleared successfully',
     showSuccessAlert: true,
     callback: () => {
-      // reload propel user
-      refreshAuthInfo();
       setIsConfirmDialogOpen(false);
+      // reload page to update user metadata - propel auth known bug in test mode
+      // would normally use refreshAuthInfo()
+      window.location.reload();
     },
   });
 

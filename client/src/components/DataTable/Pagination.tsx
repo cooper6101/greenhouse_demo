@@ -23,12 +23,6 @@ const Pagination = ({
   const isFirstPage = currentPage === 1;
   const isLastPage = totalPages ? currentPage >= totalPages : !hasNextPage;
 
-  // Calculate range of items shown based on visible items
-  const startItem = (currentPage - 1) * rowsPerPage + 1;
-  const endItem = totalItems
-    ? Math.min(currentPage * rowsPerPage, totalItems)
-    : startItem + visibleItems - 1;
-
   const handlePrevious = () => {
     if (!isFirstPage) {
       onPageChange(currentPage - 1);
@@ -66,21 +60,10 @@ const Pagination = ({
         <div>
           <p className='text-sm text-gray-700 dark:text-gray-300'>
             Showing{' '}
-            <span className='font-medium'>
-              {startItem}
-              {totalItems && `-${endItem}`}
-            </span>{' '}
-            {totalItems ? (
-              <>
-                of <span className='font-medium'>{totalItems}</span> results
-              </>
-            ) : (
-              <>
-                {visibleItems > 0 && `of ${visibleItems} results`}
-                {hasNextPage && '+'}
-                {totalPages && ` (Page ${currentPage} of ${totalPages})`}
-              </>
-            )}
+            <>
+              {visibleItems > 0 && `${visibleItems} results`}
+              {totalPages && ` (Page ${currentPage} of ${totalPages})`}
+            </>
           </p>
         </div>
         <div>

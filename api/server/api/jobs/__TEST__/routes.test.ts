@@ -54,7 +54,7 @@ describe('jobs route Test', () => {
     stubs.auth.restore();
   });
 
-  test('should fail without valid API key', async () => {
+  test('should fail without valid credentials', async () => {
     const res = await fastify.inject().get(`/jobs`);
     expect(res.statusCode).toEqual(401);
   });
@@ -63,7 +63,6 @@ describe('jobs route Test', () => {
     const testID = 'TEST_ID';
     const res = await fastify.inject().get(`/jobs/${testID}`).headers({
       authorization: 'Bearer test-token',
-      'x-greenhouse-key': encryptedKey,
     });
 
     expect(res.statusCode).toEqual(200);
@@ -81,7 +80,6 @@ describe('jobs route Test', () => {
 
     const res = await fastify.inject().get(`/jobs`).headers({
       authorization: 'Bearer test-token',
-      'x-greenhouse-key': encryptedKey,
     });
 
     expect(res.statusCode).toEqual(200);
@@ -91,5 +89,23 @@ describe('jobs route Test', () => {
     expect(body).toHaveLength(1);
 
     expect(body).toMatchObject([oneJob]);
+  });
+
+  test('should fail without API key', async () => {
+    // reset auth stub so it doesn't have a key
+    stubs.auth.resolves({
+      userId: '123',
+      email: '',
+      properties: {
+        metadata: {
+          greenhouseApiKey: null,
+        },
+      },
+    } as any);
+
+    const res = await fastify.inject().get(`/jobs`).headers({
+      authorization: 'Bearer test-token',
+    });
+    expect(res.statusCode).toEqual(401);
   });
 });

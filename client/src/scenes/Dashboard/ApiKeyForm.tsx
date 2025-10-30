@@ -1,10 +1,8 @@
-import { useAuthInfo } from '@propelauth/react';
 import { useEffect, useState } from 'react';
 import * as ApiKey from '@/api/ApiKey';
 import { useApiMutation } from '@/hooks/query';
 
 const ApiKeyForm = () => {
-  const { refreshAuthInfo } = useAuthInfo();
   const [apiKey, setApiKey] = useState('');
 
   const mutation = useApiMutation({
@@ -13,8 +11,9 @@ const ApiKeyForm = () => {
     successMessage: 'API key saved successfully',
     showSuccessAlert: true,
     callback: () => {
-      // reload propel user
-      refreshAuthInfo();
+      // reload page to update user metadata - propel auth known bug in test mode
+      // would normally use refreshAuthInfo()
+      window.location.reload();
     },
   });
 

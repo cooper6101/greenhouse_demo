@@ -52,7 +52,7 @@ describe('candidates route Test', () => {
     stubs.auth.restore();
   });
 
-  test('should fail without valid API key', async () => {
+  test('should fail without valid credentials', async () => {
     const res = await fastify.inject().get(`/candidates`);
     expect(res.statusCode).toEqual(401);
   });
@@ -60,7 +60,6 @@ describe('candidates route Test', () => {
   test('should GET SEARCH candidates', async () => {
     const res = await fastify.inject().get(`/candidates`).headers({
       authorization: 'Bearer test-token',
-      'x-greenhouse-key': encryptedKey,
     });
 
     expect(res.statusCode).toEqual(200);
@@ -71,5 +70,23 @@ describe('candidates route Test', () => {
     expect(body).toHaveLength(1);
 
     expect(body).toMatchObject([oneCandidate]);
+  });
+
+  test('should fail without API key', async () => {
+    // reset auth stub so it doesn't have a key
+    stubs.auth.resolves({
+      userId: '123',
+      email: '',
+      properties: {
+        metadata: {
+          greenhouseApiKey: null,
+        },
+      },
+    } as any);
+
+    const res = await fastify.inject().get(`/candidates`).headers({
+      authorization: 'Bearer test-token',
+    });
+    expect(res.statusCode).toEqual(401);
   });
 });
